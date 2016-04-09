@@ -1,0 +1,36 @@
+---
+- hosts: default
+  become: true
+  vars:
+    inbucket_version: inbucket_1.1.0-rc2_linux_amd64
+  tasks:
+    - name: upgrade packages
+      apt: update_cache=yes upgrade=safe
+    - name: uninstall exim4
+      apt: name=exim4* state=absent
+    - name: install php5
+      apt: name=php5-cli state=installed
+    - name: install inbucket deps
+      apt: name=libcap2-bin state=installed
+    - name: install inbucket (download)
+      get_url: dest=/tmp/inbucket.tar.gz url="https://dl.bintray.com/content/jhillyerd/golang/{{ inbucket_version }}.tar.gz?direct" validate_certs=no
+    - name: install inbucket (unpack)
+      unarchive: copy=no dest=/opt src=/tmp/inbucket.tar.gz
+    - name: install inbucket (symlink)
+      file: src=/opt/{{ inbucket_version }} path=/opt/inbucket state=link
+    - name: install inbucket (create user)
+      user: name=inbucket system=yes createhome=no
+    - name: install inbucket (create data store)
+      file: path=/var/opt/inbucket owner=inbucket group=inbucket mode=0775 state=directory
+    - name: make sure inbucket binary has capabilities
+      capabilities: path=/opt/inbucket/inbucket capability=cap_net_bind_service=+ep state=present
+    - name: install inbucket (systemd unit file)
+      template: src=inbucket.service.j2 dest=/etc/systemd/system/inbucket.service owner=root group=root mode=0755
+    - name: configure inbucket
+      template: src=inbucket.conf.j2 dest=/etc/opt/inbucket.conf owner=root group=root mode=0755
+      notify: restart inbucket
+    - name: make inbucket start on boot
+      service: name=inbucket enabled=yes
+  handlers:
+    - name: restart inbucket
+      service: name=inbucket state=restarted

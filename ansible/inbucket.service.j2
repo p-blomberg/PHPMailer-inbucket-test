@@ -1,0 +1,11 @@
+[Unit]
+Description=Inbucket
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/opt/inbucket/inbucket /etc/opt/inbucket.conf
+User=inbucket

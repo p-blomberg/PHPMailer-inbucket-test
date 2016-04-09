@@ -1,0 +1,12 @@
+{
+    "name": "p-blomberg/phpmailer-inbucket-test",
+    "require": {
+        "phpmailer/phpmailer": "^5.2.14"
+    },
+    "authors": [
+        {
+            "name": "Petter Blomberg",
+            "email": "git@petterblomberg.se"
+        }
+    ]
+}
