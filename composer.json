@@ -8,5 +8,8 @@
             "name": "Petter Blomberg",
             "email": "git@petterblomberg.se"
         }
-    ]
+    ],
+	"autoload": {
+        "classmap": ["models"]
+    }
 }
