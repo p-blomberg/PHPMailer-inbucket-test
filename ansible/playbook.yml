@@ -9,7 +9,7 @@
     - name: uninstall exim4
       apt: name=exim4* state=absent
     - name: install php5
-      apt: name=php5-cli state=installed
+      apt: name=php5-cli,php5-curl state=installed
     - name: install inbucket deps
       apt: name=libcap2-bin state=installed
     - name: install inbucket (download)

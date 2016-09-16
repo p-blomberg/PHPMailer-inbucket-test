@@ -1,11 +1,12 @@
 <?php
 require __DIR__."/includes.php";
 
-$mail = new Email;
+$subject = 'HTML email test '.time().'+'.rand(1000000,9999999);
 
+$mail = new Email;
 $mail->setFrom('herpaderpa@example.com', 'HerpaDerpa, inc.');
 $mail->addAddress('derp@example.com', 'Derpa Derpa');
-$mail->Subject = 'The HTML häs been derped';
+$mail->Subject = $subject;
 $mail->Body = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,3 +38,18 @@ if(!$mail->send()) {
 } else {
   echo "Message has been sent.\n";
 }
+
+$mailbox = new InbucketMailbox("derp");
+$messages = $mailbox->get_messages($subject);
+if(count($messages) == 0) {
+	throw new Exception("Message doesn't seem to have arrived. :(");
+}
+if(count($messages) > 1) {
+	throw new Exception("There seems to be more than one message sent the same second and with the same random number... This is strange.");
+}
+$msg = $messages[0];
+echo "Message delivered. Inbucket ID: ".$msg->id."\n";
+echo "Text part:\n";
+echo $msg->body->text;
+echo "HTML part:\n";
+echo $msg->body->html;
