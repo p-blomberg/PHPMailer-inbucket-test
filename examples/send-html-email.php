@@ -1,9 +1,9 @@
 <?php
 require dirname(__DIR__)."/includes.php";
 
+// Compose the email
 $subject = 'HTML email test '.time().'+'.rand(1000000,9999999);
 $to = 'derp';
-
 $mail = new Email;
 $mail->setFrom('herpaderpa@example.com', 'HerpaDerpa, inc.');
 $mail->addAddress($to.'@example.com', 'Derpa Derpa');
@@ -34,12 +34,14 @@ $mail->AltBody = "This is the text part of a HTML email.
 If you are reading this, it sucks to be you.
 But please, enjoy some utf8 while you're at it: 😺 😍";
 
+// Send the email
 if(!$mail->send()) {
   throw new Exception('Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
 } else {
   echo "Message has been sent.\n";
 }
 
+// Check if it arrived in inbucket
 $mailbox = new InbucketMailbox($to);
 $messages = $mailbox->get_messages($subject);
 if(count($messages) == 0) {
@@ -50,7 +52,3 @@ if(count($messages) > 1) {
 }
 $msg = $messages[0];
 echo "Message delivered to '{$to}'. Inbucket ID: ".$msg->id."\n";
-echo "Text part:\n";
-echo $msg->body->text;
-echo "HTML part:\n";
-echo $msg->body->html;

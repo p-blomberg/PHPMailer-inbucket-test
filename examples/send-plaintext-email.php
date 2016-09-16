@@ -1,6 +1,7 @@
 <?php
 require dirname(__DIR__)."/includes.php";
 
+// Compose the email
 $mail = new Email;
 $mail->setFrom('herpaderpa@example.com', 'HerpaDerpa, inc.');
 $mail->addAddress('derp@example.com', 'Derpa Derpa');
@@ -9,6 +10,7 @@ $mail->Body = 'Bäcon ipsum dolor amet esse short ribs t-bone fugiat do beef rib
 
 Non pork loin turkey cupim officia flank ex tongue laborum excepteur nisi boudin consectetur. Irure jerky sed, pariatur tail non ex turkey spare ribs pork ham hock. Leberkas aute officia ut filet mignon do andouille ea enim dolore incididunt corned beef. Nisi duis proident jowl pariatur filet mignon tempor eiusmod chicken kevin nostrud.';
 
+// Send the email
 if(!$mail->send()) {
   throw new Exception('Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
 } else {
