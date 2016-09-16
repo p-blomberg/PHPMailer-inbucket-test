@@ -1,8 +1,7 @@
 <?php
-require __DIR__."/includes.php";
+require dirname(__DIR__)."/includes.php";
 
 $mail = new Email;
-
 $mail->setFrom('herpaderpa@example.com', 'HerpaDerpa, inc.');
 $mail->addAddress('derp@example.com', 'Derpa Derpa');
 $mail->Subject = 'The Herp häs been derped';
@@ -13,5 +12,8 @@ Non pork loin turkey cupim officia flank ex tongue laborum excepteur nisi boudin
 if(!$mail->send()) {
   throw new Exception('Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
 } else {
-  echo "Message has been sent.\n";
+  echo "Message has been sent to:\n";
+	foreach($mail->getToAddresses() as $a) {
+		echo $a[0]."\n";
+	}
 }

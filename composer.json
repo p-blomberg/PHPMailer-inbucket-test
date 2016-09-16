@@ -1,12 +1,18 @@
 {
 	"name": "p-blomberg/phpmailer-inbucket-test",
-	"require": {
-		"phpmailer/phpmailer": "^5.2.14"
-	},
 	"authors": [
 		{ "name": "Petter Blomberg", "email": "git@petterblomberg.se" }
 	],
+	"require": {
+		"phpmailer/phpmailer": "^5.2.14"
+	},
 	"autoload": {
 		"classmap": ["models"]
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^5.5.4"
+	},
+	"autoload-dev": {
+		"classmap": ["tests/models"]
 	}
 }
